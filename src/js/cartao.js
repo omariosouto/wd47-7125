@@ -1,33 +1,17 @@
-;(function() {
-const form = document.querySelector('.formNovoCartao')
-const mural = document.querySelector('.mural')
-let contador = document.querySelectorAll('.cartao').length
-form.addEventListener('submit', function(evento) {
-    //                         Evita que o comportamento padrão aconteça
-    evento.preventDefault()
-    //console.log(evento)
+// criaCartao é um módulo
+// Module Pattern com closure
 
-    const textArea = document.querySelector('.formNovoCartao-conteudo')
-    const conteudo = textArea.value.trim()
-    const isTextAreaVazio = conteudo.length === 0
-
-    // Preciso do conteudo
-    if(isTextAreaVazio) {
-        // <div class="formNovoCartao-msg></div>
-        const msgErro = document.createElement('div') // Criei elemento
-        msgErro.classList.add('formNovoCartao-msg') // Adicionei uma classe
-        msgErro.textContent = 'Não digite vários nada'
-
-        const btnSalvar = form.querySelector('formNovoCartao-salvar')
-        form.insertBefore(msgErro, btnSalvar)
-
-        // Mata ele!!${contador}!!!
-        msgErro.addEventListener('animationend', function() {
-            msgErro.remove()
-        })
-    } else {
+const criaCartao = (function(){
+    "use strict"
+    
+    //var cria declara
+    //= atribui
+    let contador = 0
+    
+    //explodindo parametro
+    // exporta a funcao
+    return function ({conteudo, cor}) {   
         contador++
-        console.log(conteudo)
 
         // Joga o conteudo no article => Imperativa
         // const cartao = document.createElement('article')
@@ -37,7 +21,7 @@ form.addEventListener('submit', function(evento) {
         // Declarativa 
         // const wrapperCartao = document.createElement('tpl')
         const cartao = $(`
-        <article id="cartao_${contador}"  class="cartao" tabindex="0">
+        <article id="cartao_${contador}"  class="cartao" tabindex="0" ${cor ? 'style="background-color:' + cor + '"' : ""}>
             <div class="opcoesDoCartao">
                 <button class="opcoesDoCartao-remove opcoesDoCartao-opcao" tabindex="0">
                 <svg><use xlink:href="#iconeRemover"></use></svg>
@@ -66,20 +50,58 @@ form.addEventListener('submit', function(evento) {
             <p class="cartao-conteudo" contenteditable tabindex="0">${conteudo}</p>
         </article>    
         `)
-
+        
         //const cartao = wrapperCartao.querySelector('.cartao')
 
+        // focus entrando
+        cartao.on('focusin', function() {
+            cartao.addClass('cartao--focado')
+        })
+        // focus saindo
+        cartao.on('focusout', function() {
+            cartao.removeClass('cartao--focado')
+        })
+        
+        // # Mudança de Cor
+        // Delegação de Eventos (Delegate)
+        // Reduzindo os eventos da página
+        cartao.on('change', ".opcoesDoCartao-radioTipo", function(evento) {
+            const novaCorDoCartao = evento.target.value
+            cartao.css("background-color", novaCorDoCartao)
+        })
+
+        // Implementar atalhos 
+        // keypress
+        // keydown
+        // keyup
+        // input 
+        cartao.on('keypress', '.opcoesDoCartao-opcao', function(event) {
+            const elementoSelecionado = $(event.target)
+            const isOpcaoDoCartao = elementoSelecionado
+                                    .hasClass('opcoesDoCartao-opcao')
+            console.log("Essa é a tecla " + event.key)
+            if((event.keyCode == 13 || event.keyCode == 32)) {
+                console.log('Se for espaço ou enter: ', event.key)
+                console.log(elementoSelecionado)
+                elementoSelecionado.click()
+            }
+        })
+
+
+        cartao.on('click', '.opcoesDoCartao-remove', function (evento) { // Função Anonima
+                cartao.addClass('cartao--tchau')
+                // transition: .4s
+                cartao.on('transitionend', function () {
+                    cartao.remove()        
+                })
+                // cartao.on('transitionend', cartao.remove)
+        })
+
+        
         //mural.appendChild(cartao)
         $('.mural').prepend(cartao)
-        
+
+    }    
         // const opcoesDoCartao = document.
-
-    }
-
-    // textArea.value = ''
-})
-
-
-
-form.classList.remove('no-js')
+    
 })()
