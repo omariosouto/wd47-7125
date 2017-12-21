@@ -24,13 +24,25 @@
 
         const xhr = new XMLHttpRequest()
         xhr.open("GET", "http://ceep.herokuapp.com/cartoes/instrucoes")
-        xhr.send()
-        const objetoResposta =  JSON.parse(xhr.response)
-        const lista = objetoResposta.instrucoes 
-
-        lista.forEach(function(instrucao){        
-            criaCartao(instrucao)
+        
+        //garante que pediu pro servidor
+        
+        xhr.addEventListener("load", function(){
+            const objetoResposta =  JSON.parse(xhr.response)
+            
+            const lista = objetoResposta.instrucoes 
+               
+            
+            lista.forEach(function(instrucao){        
+                criaCartao(instrucao)
+            })
         })
+
+        xhr.addEventListener("error", function(event){
+            alert(xhr.status === 0)
+        })
+
+        xhr.send()
 
         // foreach(instrucao : lista) {
         //     alert(instrucao)            
