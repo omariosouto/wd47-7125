@@ -27,11 +27,11 @@
         
         //garante que pediu pro servidor
         
+        // callback
         xhr.addEventListener("load", function(){
             const objetoResposta =  JSON.parse(xhr.response)
             
-            const lista = objetoResposta.instrucoes 
-               
+            const lista = objetoResposta.instrucoes             
             
             lista.forEach(function(instrucao){        
                 criaCartao(instrucao)

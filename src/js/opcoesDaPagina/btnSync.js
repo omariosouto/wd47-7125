@@ -18,7 +18,21 @@
         //     ]
         // }
 
-        NodeList
+        //NodeList
+        
+        // // polyfill
+        // if(Array.from === undefined){
+        //     Array.from = function(quaseUmaLista){
+                
+        //         const lista = [];
+        //         for(let i = 0; i < quaseUmaLista.length; i++){
+        //             lista.push(quaseUmaLista[i])
+        //         }
+                
+        //         return lista
+        //     }
+        // }
+            
         const mural = {
             usuario: prompt("Digite seu usuário")
             ,cartoes: Array
@@ -35,7 +49,7 @@
         xhr.open("POST", "http://ceep.herokuapp.com/cartoes/salvar")
         xhr.setRequestHeader("Content-Type", "application/json")
 
-        // xhr.timeout = 1000
+        xhr.timeout = 5000
 
         xhr.send(JSON.stringify(mural))
 
@@ -43,23 +57,33 @@
 
             xhr.response
             console.log(xhr.response)
-
+            
             btnSync.removeClass("botaoSync--esperando")
             btnSync.addClass("botaoSync--sincronizado")
         })
-
 
         xhr.addEventListener("error", function(){
             btnSync.removeClass("botaoSync--esperando")
             btnSync.addClass("botaoSync--deuRuim")
         })
 
+        xhr.addEventListener("abort", function(){
+            btnSync.removeClass("botaoSync--esperando")
+            btnSync.addClass("botaoSync--deuRuim")
+        })
 
-        // xhr.addEventListener("readystatechange", function(){
+        //timer para conexao lenta
+        setTimeout(function timer(){
+            xhr.abort()
+        }, 2000)
 
-        //     btnSync.removeClass("botaoSync--esperando")
-        //     btnSync.addClass("botaoSync--deuRuim")
-        // })
+
+        // web sockets
+        // setInterval(function(){
+        //     //ajax
+        // }, 2000)
+
+
     })
 
     btnSync.removeClass("no-js")

@@ -10,7 +10,7 @@ const criaCartao = (function(){
     
     //explodindo parametro
     // exporta a funcao
-    return function ({conteudo, cor}) {   
+    return function ({conteudo, cor}) {
         contador++
 
         // Joga o conteudo no article => Imperativa
@@ -101,7 +101,42 @@ const criaCartao = (function(){
         //mural.appendChild(cartao)
         $('.mural').prepend(cartao)
 
-    }    
-        // const opcoesDoCartao = document.
+    }
+}())
+
+;(function(){
+
+    const usuario = "art"
+    const elemento = document.createElement("tpl")
+    elemento.innerHTML = `
+        <script async src="http://ceep.herokuapp.com/cartoes/carregar/?usuario=${usuario}&callback=callback"></script>
+    `
+    document.body.appendChild(elemento.querySelector("script"))
+
+    // $(`<script async src="http://ceep.herokuapp.com/cartoes/carregar/?usuario=${usuario}&callback=callback"></script>`)
+    // .appendTo('body')
     
 })()
+
+function callback(json){
+    const lista = json.cartoes   
+    lista.forEach(function(cartao){        
+        criaCartao(cartao)
+    })
+}
+
+
+$.ajax({
+    url: 'http://ceep.herokuapp.com/cartoes/carregar/'
+    ,method: 'GET'
+    ,dataType: 'jsonp'
+    , data: {
+        usuario: 'art'
+    }
+    ,success: function(json){
+        const lista = json.cartoes   
+        lista.forEach(function(cartao){        
+            criaCartao(cartao)
+        })
+    }
+})

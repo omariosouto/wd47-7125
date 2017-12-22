@@ -1,0 +1,44 @@
+//Cross-browser
+    //keyCode
+
+    //Babel // BUILD 
+        //plugins jsx
+    //jQuery
+    //Polyfill
+
+//Orientação a Objetos com JS
+
+//Progressive Web Apps
+    //Workers
+    //Service Worker
+    //Cache Storage
+    // Apple precisa implementar
+
+//Midia do usuario
+    //getUserMedia
+
+//Storage
+    ///File API
+    //localStorage
+    //sessionStorage
+    //IndexedDB
+
+
+//Declarativo vs Imperativo
+//Como e pq os frameworks funcionam
+    //Model View Controller
+    //React
+    //Angular
+    //Vue
+
+//Assíncrono
+    //AJAX Request
+    //Web Sockets
+    //XHR e fetch
+    //fetch("url", {method:'GET'})
+        .then(function(){
+            
+        })
+    //Promise é o padrão de qualquer funcao assincrona
+
+
